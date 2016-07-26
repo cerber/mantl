@@ -13,6 +13,7 @@ import sys
 import urllib2
 
 # FROM plugins/inventory/terraform.py
+sys.path += [os.getcwd() + "/plugins/inventory"]
 # PYTHON_PATH is added to in .travis.yml
 import terraform as tf
 
