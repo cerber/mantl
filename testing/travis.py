@@ -21,7 +21,7 @@ import terraform as tf
 ## TRAVIS STEPS
 
 def install():
-    os.environ['PATH'] += ":~/bin"
+    os.environ['PATH'] += ":{}/bin".format(os.environ["HOME"])
     print(os.environ['PATH'])
     run_cmds([
         (["pip", "install", "-r", "requirements.txt"], 1),
