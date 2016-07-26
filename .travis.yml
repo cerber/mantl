@@ -9,6 +9,10 @@ branches:
   only:
     - master
 
+cache:
+  - pip
+  - testing/cache
+
 env:
   global:
   - TF_VAR_build_number=${TRAVIS_JOB_NUMBER/./-}

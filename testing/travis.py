@@ -22,6 +22,7 @@ import terraform as tf
 
 def install():
     os.environ['PATH'] += ":~/bin"
+    print(os.environ['PATH'])
     run_cmds([
         (["pip", "install", "-r", "requirements.txt"], 1),
         (["mkdir", "-p", "~/bin"], 1),
