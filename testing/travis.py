@@ -61,7 +61,7 @@ def script():
         ]
 
         cmds.extend([
-                (["ssh-add"], 1),
+                (["eval", "$(ssh-agent)", "&&", "ssh-add"], 1),
                 (["terraform", "apply"], 1),
                 (ansible_prefix + ["playbooks/wait-for-hosts.yml"], 3),
                 (ansible_prefix + ["playbooks/upgrade-packages.yml"], 1),
