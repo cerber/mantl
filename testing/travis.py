@@ -21,15 +21,15 @@ import terraform as tf
 ## TRAVIS STEPS
 
 def install():
-    os.environ['PATH'] += ":{}/bin".format(os.environ["HOME"])
-    print(os.environ['PATH'])
+    bin_dir = "{}/bin".format(os.environ['HOME'])
+    ssh_dir = "{}/.ssh".format(os.environ['HOME'])
     run_cmds([
         (["pip", "install", "-r", "requirements.txt"], 1),
-        (["mkdir", "-p", "~/bin"], 1),
         (["curl", "-Lo", "terraform.zip",  "https://releases.hashicorp.com/terraform/{0}/terraform_{0}_linux_amd64.zip".format(os.environ['TERRAFORM_VERSION'])], 1),
-        (["mkdir", "-p", "~/.ssh"], 1),
-        (["unzip", "-d", "~/bin/", "terraform.zip"], 1),
-        (["ssh-keygen", "-N", '', "-f", "~/.ssh/id_rsa"], 1),
+        (["mkdir", "-p", bin_dir], 1),
+        (["unzip", "-d", bin_dir, "terraform.zip"], 1),
+        (["mkdir", "-p", ssh_dir], 1),
+        (["ssh-keygen", "-N", '', "-f", ssh_dir + "/id_rsa"], 1),
             ])
 
 
