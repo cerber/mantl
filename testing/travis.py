@@ -49,6 +49,7 @@ def script():
 
     # linter commands
     cmds = [
+        (["ln", "-s", os.environ["TERRAFORM_FILE"], "terraform.tf"], 1),
         (["terraform", "get"], 1),
         (["terraform", "plan", "--input=false", "--refresh=false"], 1),
     ]
