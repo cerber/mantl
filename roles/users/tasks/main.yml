@@ -1,0 +1,64 @@
+---
+- name: configure members of wheel group for passwordless sudo
+  sudo: yes
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: "^%wheel"
+    line: "%wheel ALL=(ALL) NOPASSWD: ALL"
+    state: present
+  tags:
+    - users
+
+- name: create os users
+  sudo: yes
+  user:
+    name: "{{ item.name }}"
+    groups: "{{ item.groups }}"
+    present: "{{ item.present }}"
+    createhome: yes
+    home: "/home/{{ item.name }}"
+    remove: yes
+  with_items: "{{ users }}"
+  tags:
+    - users
+
+- name: create .ssh directories
+  file:
+    state: directory
+    path: "/home/{{ item.name }}/.ssh"
+    mode: 0700
+  with_items: "{{ users }}"
+  tags:
+    - users
+
+- name: write authorized keys to the consul k/v
+  run_once: yes
+  command: >-
+    consul-cli kv-write
+    {% if consul_acl_master_token is defined %}
+    --token={{ consul_acl_master_token }}
+    {% endif %}
+    secure/authorized_keys/{{ item.name }}
+    {{ item.authorized_keys }}
+  with_items: "{{ users }}"
+  tags:
+    - users
+
+- name: create authorized_keys templates
+  template:
+    src: authorized_keys.tmpl.j2
+    dest: "/etc/consul-template/templates/authorized_keys.{{ item.name }}.tmpl"
+  with_items: "{{ users }}"
+  tags:
+    - users
+
+- name: create authorized_keys consul-template configurations
+  run_once: yes
+  template:
+    src: authorized-keys.cfg.j2
+    dest: "/etc/consul-template/config.d/authorized-keys-{{ item.name }}.cfg"
+  with_items: "{{ users }}"
+  notify:
+    - reload consul-template
+  tags:
+    - users
