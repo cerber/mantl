@@ -174,9 +174,14 @@ def failing_checks(node_address, timeout=30):
 
 def health_checks():
     logging.info("Getting hosts")
-    # Get IP addresses of hosts from a dynamic inventory script
-    hosts = tf.query_list(tf.iterhosts(tf.iterresources(tf.tfstates())))
 
+    hosts = []
+    host_data = tf.query_list(tf.iterhosts(tf.iterresources(tf.tfstates())))
+    host_data = host_data["_meta"]["hostvars"]
+
+    for host, dic in host_data.iteritems():
+        if dic.get("role", "").lower() == "control":
+            hosts.append( (host, dic["public_ipv4"]) )
 
     if len(hosts) == 0:
         logging.error("terraform.py reported no control hosts.")
