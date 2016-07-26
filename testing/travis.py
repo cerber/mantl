@@ -59,7 +59,7 @@ def script():
                 (ansible_prefix + ["playbooks/wait-for-hosts.yml"], 3),
                 (ansible_prefix + ["playbooks/upgrade-packages.yml"], 1),
                 (ansible_prefix + ["sample.yml"], 1),
-            ]
+            ])
 
     if not run_cmds(cmds, fail_sequential=True):
         sys.exit(1)
@@ -119,7 +119,7 @@ def run_cmds(cmds, fail_sequential=False):
 
 def filter_not_docfiles(diff_names):
 
-    is_doc = lambda f: f.startswith('docs') or any [f.endswith(ext) for ext in ['md', 'rst']]
+    is_doc = lambda f: f.startswith('docs') or any([f.endswith(ext) for ext in ['md', 'rst']])
     return [f for f in diff_names.split() if not is_doc(f)]
 
 
