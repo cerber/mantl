@@ -30,6 +30,7 @@ def install():
         (["unzip", "-d", bin_dir, "terraform.zip"], 1),
         (["mkdir", "-p", ssh_dir], 1),
         (["ssh-keygen", "-N", '', "-f", ssh_dir + "/id_rsa"], 1),
+        (["ssh-add"], 1),
             ])
 
 
@@ -61,7 +62,6 @@ def script():
         ]
 
         cmds.extend([
-                (["eval", "$(ssh-agent)", "&&", "ssh-add"], 1),
                 (["terraform", "apply"], 1),
                 (ansible_prefix + ["playbooks/wait-for-hosts.yml"], 3),
                 (ansible_prefix + ["playbooks/upgrade-packages.yml"], 1),
