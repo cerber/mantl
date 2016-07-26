@@ -23,7 +23,7 @@ import terraform as tf
 def install():
     run_cmds([
         (["pip", "install", "-r", "requirements.txt"], 1),
-        (["curl", "-Lo", "terraform.zip",  "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"], 1),
+        (["curl", "-Lo", "terraform.zip",  "https://releases.hashicorp.com/terraform/{0}/terraform_{0}_linux_amd64.zip".format(os.environ['TERRAFORM_VERSION'])], 1),
         (["mkdir", "-p", "~/.ssh"], 1),
         (["unzip", "-d", "testing/cache/", "terraform.zip"], 1),
         (["ssh-keygen", "-N", '', "-f", "~/.ssh/id_rsa"], 1),
