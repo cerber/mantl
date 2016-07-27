@@ -39,7 +39,7 @@
     - mesos
 
 - name: write mantl-api credential
-  when: do_mesos_framework_auth|bool
+#  when: do_mesos_framework_auth|bool
   sudo: yes
   template:
     src: mantl-api-credential.j2
