@@ -84,8 +84,16 @@
     - chrony
     - smlr
     - zookeepercli
+    - ntp
   tags:
     - bootstrap
+
+- name: enable ntpd
+  sudo: yes
+  service:
+    name: ntpd
+    enabled: true
+    state: started
 
 - name: enable chronyd
   sudo: yes

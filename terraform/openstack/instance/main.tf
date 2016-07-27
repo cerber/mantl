@@ -17,6 +17,10 @@ variable volume_size { default = 20 }
 variable volume_device { default = "/dev/vdb" }
 variable user_data { default = "" }
 
+resource "template_file" "cloud_init" {
+  template = "${file("terraform/openstack/instance/cloud_init.tpl")}"
+}
+
 resource "openstack_blockstorage_volume_v1" "blockstorage" {
   name = "${var.name}-${var.role}-${format(var.count_format, var.count_offset+count.index+1) }"
   description = "${var.name}-${var.role}-${format(var.count_format, var.count_offset+count.index+1) }"
@@ -54,7 +58,8 @@ resource "openstack_compute_instance_v2" "instance" {
 
   count = "${var.count}"
 
-  user_data = "${var.user_data}"
+  #user_data = "${var.user_data}"
+  user_data = "${template_file.cloud_init.rendered}"
 }
 
 output hostname_list {

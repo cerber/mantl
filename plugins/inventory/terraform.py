@@ -320,7 +320,7 @@ def openstack_host(resource, module_name):
         'ansible_ssh_port': 22,
         # workaround for an OpenStack bug where hosts have a different domain
         # after they're restarted
-        'host_domain': 'novalocal',
+        'host_domain': 'cisco.com',
         'use_host_domain': True,
         # generic
         'public_ipv4': raw_attrs['access_ip_v4'],

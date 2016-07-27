@@ -1,5 +1,5 @@
 ---
 use_host_domain: false
-host_domain: novalocal
+host_domain: cisco.com
 selinux_policy: targeted
 selinux_state: permissive
