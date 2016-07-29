@@ -33,6 +33,11 @@ resource "openstack_blockstorage_volume_v1" "blockstorage" {
   count = "${var.count}"
 }
 
+#resource "openstack_compute_servergroup_v2" "mantl-sg" {
+#  name = "mantl-sg"
+#  policies = ["anti-affinity"]
+#}
+
 resource "openstack_compute_instance_v2" "instance" {
   floating_ip = "${ element(split(",", var.floating_ips), count.index) }"
   name = "${var.name}-${var.role}-${format(var.count_format, var.count_offset+count.index+1)}"
@@ -40,6 +45,9 @@ resource "openstack_compute_instance_v2" "instance" {
   image_name = "${var.image_name}"
   flavor_name = "${var.flavor_name}"
   security_groups  = [ "${ var.security_groups }" ]
+  ##scheduler_hints {
+  ##  group = "${openstack_compute_servergroup_v2.mantl-sg.id}"
+  ##}
 
   network  = { 
     uuid = "${var.network_uuid}" 
